@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "my-budget"
+version = "0.1.0"
+description = "Personal finance Frontend"
+authors = ["Alessandre Martins <sandremartins@gmail.com>"]
+readme = "README.md"
+packages = [{include = "my_budget"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^7.2.0"
+factory-boy = "^3.2.1"
+dash = "^2.7.0"
+dash-bootstrap-components = "^1.2.1"
+pandas = "^1.5.2"
+dash-bootstrap-templates = "^1.0.7"
+globals = "^0.3.34"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
