@@ -8,7 +8,7 @@ python3 -m pip --version
 https://python-poetry.org/docs/
 curl -sSL https://install.python-poetry.org | python3 -
 
-export PATH="/Users/sandre/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 poetry --version
 
@@ -20,6 +20,9 @@ pip3 install black
 #Open repository project
 
 poetry init
+
+
+export PATH="$HOME/.poetry/bin:$PATH"
 
 #----------------------log poetry----------------------#
 log:
@@ -117,3 +120,4 @@ poetry add <module>
 poetry run python <file.py>
 
 poetry run python myindex.py
+
