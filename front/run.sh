@@ -22,7 +22,8 @@ pip3 install black
 poetry init
 
 
-export PATH="$HOME/.poetry/bin:$PATH"
+#export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"   
 
 #----------------------log poetry----------------------#
 log:

@@ -1,6 +1,6 @@
 # `python-base` sets up all our shared environment variables
-# ßFROM python:3.8.1-slim as python-base
-FROM python:3.10.0a7-slim-buster as python-base
+FROM python:3.10 as python-base
+
     # python
 ENV PYTHONUNBUFFERED=1 \
     # prevents python creating .pyc files
@@ -31,6 +31,9 @@ ENV PYTHONUNBUFFERED=1 \
 # prepend poetry and venv to path
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
+
+# `builder-base` stage is used to build deps + create our virtual enviroment
+FROM python-base as builder-base
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         # deps for installing poetry
@@ -39,7 +42,8 @@ RUN apt-get update \
         build-essential
 
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | python3 - --git https://github.com/python-poetry/poetry.git@master
+
 
 # install postgres dependencies inside of Docker
 RUN apt-get update \
@@ -47,8 +51,11 @@ RUN apt-get update \
     && pip install psycopg2
 
 # copy project requirement files here to ensure they will be cached.
-WORKDIR $PYSETUP_PATH
-COPY front/poetry.lock front/pyproject.toml ./
+#WORKDIR $PYSETUP_PATH
+WORKDIR /app
+#COPY front/poetry.lock front/pyproject.toml ./
+#RUN export PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
+COPY . ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install --no-dev
@@ -56,11 +63,11 @@ RUN poetry install --no-dev
 # quicker install as runtime deps are already installed
 RUN poetry install
 
-WORKDIR /app
+#WORKDIR /app
 
-COPY front /app/
+#COPY front /app/
 
-EXPOSE 8050
+#EXPOSE 8050
 
-CMD [ "poetry", "run", "python", "myindex.py"]
+# CMD [ "poetry", "run", "python", "myindex.py", "--port", "8050"]
 
